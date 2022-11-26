@@ -1,0 +1,11 @@
+# Server
+fastapi==0.75.1
+uvicorn==0.17.6
+
+# DB
+SQLAlchemy==1.4.35
+psycopg2==2.9.3
+asyncpg==0.25.0
+greenlet==1.1.2
+alembic==1.7.7
+
