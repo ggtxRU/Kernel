@@ -3,8 +3,6 @@ from typing import Optional
 import uvicorn
 from fastapi import FastAPI, APIRouter
 
-from api.response.exceptions.base import ResponseBadRequestException, ResponseForbiddenException, \
-    ResponseNotFoundException, ResponseUnprocessableException, ResponseInternalServerException, ResponseTimeoutException
 from vendors.config import Config
 from vendors.database import Database, DatabaseFactory
 
@@ -35,18 +33,8 @@ class Application:
             await self._db_primary.async_engine_close()
 
     def add_routers(self, routers: list[APIRouter]) -> None:
-        api_router = APIRouter(responses={
-            400: {'model': ResponseBadRequestException},
-            401: {'model': ResponseForbiddenException},
-            404: {'model': ResponseNotFoundException},
-            422: {'model': ResponseUnprocessableException},
-            500: {'model': ResponseInternalServerException},
-            504: {'model': ResponseTimeoutException},
-        })
         for router in routers:
-            api_router.include_router(router)
-
-        self._fast_api_server.include_router(api_router)
+            self._fast_api_server.include_router(router)
 
     def run_server(self) -> None:
         uvicorn.run(

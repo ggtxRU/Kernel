@@ -32,8 +32,9 @@ class Database:
         session = self.create_async_session()
         try:
             await session.execute('SELECT 2')
-        except:
-            await session.execute('CREATE DATABASE kernel_db')
+        except Exception as ex:
+            raise ValueError(
+                'Something went wrong in the process of checking the connection to the DEV database: --- %s ---' % ex)
 
     def create_async_session(self) -> AsyncSession:
         return self._async_session_factory()
