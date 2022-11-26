@@ -3,6 +3,7 @@ import os
 from server.routers import routers
 from vendors.app import Application
 from vendors.config import Config
+from vendors.router import CustomRoute
 
 
 def run_server(app: Application):
@@ -11,6 +12,9 @@ def run_server(app: Application):
 
     # Создание и проверка подключения к основной базе данных
     app.init_primary_database_for_server()
+
+    # Инициализация кастомного роутера
+    CustomRoute.set_app(app)
 
     # Подключение роутеров
     app.add_routers(routers)
