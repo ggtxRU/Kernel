@@ -1,0 +1,20 @@
+app:
+    name: 'Kernel'
+    description: 'Backend for Kernel'
+    version: '0.0.1'
+    env: 'local'
+
+server:
+    docs_url: '/docs'
+    root_path: 'http://127.0.0.1:8000'
+    host: '127.0.0.1'
+    port: 8000
+    workers: 1
+
+db_primary:
+    host: 'postgres'
+    port: 5432
+    user: 'postgres'
+    password: 'root'
+    database: 'kernel_test'
+    pool_size: 10

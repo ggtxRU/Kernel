@@ -14,19 +14,10 @@ from vendors.config import Config
 from db.models.calculations.calculation import DBCalculation
 from db.models.calculations.complete_calculation import DBCalculationResult
 
-# this is the Alembic Config object, which provides
-# access to the values within the .ini file in use.
 config = context.config
 
-# Interpret the config file for Python logging.
-# This line sets up loggers basically.
-if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
+fileConfig(config.config_file_name)
 
-# add your model's MetaData object here
-# for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
 target_metadata = Base.metadata
 
 config_path = os.environ.get('CONFIG', 'configs/local.yaml')

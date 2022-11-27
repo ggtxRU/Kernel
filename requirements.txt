@@ -15,3 +15,14 @@ PyYAML==6.0
 # Worker
 pandas
 numpy
+
+# Tests
+pytest==7.1.1
+pytest-cov==3.0.0
+pytest-asyncio==0.18.3
+Faker==11.3.0
+requests==2.27.1
+
+# Linters
+flake8==4.0.1
+mypy==0.961

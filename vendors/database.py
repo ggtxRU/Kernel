@@ -1,5 +1,6 @@
 from typing import Optional
 
+from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine, AsyncSession
 from sqlalchemy.orm import sessionmaker
@@ -27,6 +28,12 @@ class Database:
         if not self._async_engine:
             raise ValueError
         return self._async_engine
+
+    @property
+    def engine(self) -> Engine:
+        if not self._engine:
+            raise ValueError
+        return self._engine
 
     async def test_async_database(self) -> None:
         session = self.create_async_session()
@@ -56,3 +63,12 @@ class DatabaseFactory:
         dsn = cls.get_dsn_by_config(config)
         engine = create_async_engine(f'postgresql+asyncpg://{dsn}', pool_pre_ping=True, pool_size=pool_size)
         return Database(async_engine=engine)
+
+    @classmethod
+    def get_from_config(cls, config: DatabaseConfig) -> Database:
+        dsn = cls.get_dsn_by_config(config)
+        engine = create_engine(f'postgresql://{dsn}', pool_pre_ping=True, pool_size=config.pool_size, max_overflow=1)
+        async_engine = create_async_engine(
+            f'postgresql+asyncpg://{dsn}', pool_pre_ping=True, pool_size=config.pool_size
+        )
+        return Database(engine=engine, async_engine=async_engine)

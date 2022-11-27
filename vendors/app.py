@@ -14,6 +14,12 @@ class Application:
         self._fast_api_server: Optional[FastAPI] = None
         self._db_primary: Optional[Database] = None
 
+    @property
+    def fast_api_server(self) -> FastAPI:
+        if not self._fast_api_server:
+            raise ValueError
+        return self._fast_api_server
+
     def init_fast_api_server(self) -> None:
         self._fast_api_server = FastAPI(
             title=self._config.app.name,
