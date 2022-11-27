@@ -11,6 +11,9 @@ from sqlalchemy.engine import URL
 from db.models.base import Base
 from vendors.config import Config
 
+from db.models.calculations.calculation import DBCalculation
+from db.models.calculations.complete_calculation import DBCalculationResult
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

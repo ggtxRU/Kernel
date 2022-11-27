@@ -11,3 +11,7 @@ alembic==1.7.7
 
 # Internal
 PyYAML==6.0
+
+# Worker
+pandas
+numpy

@@ -39,12 +39,19 @@ class Application:
         async def close_primary_database_event() -> None:
             await self._db_primary.async_engine_close()
 
+    def init_async_primary_database(self) -> None:
+        self._db_primary = DatabaseFactory.get_async_from_config(self._config.db_primary, pool_size=1)
+
     def add_routers(self, routers: list[APIRouter]) -> None:
         for router in routers:
             self._fast_api_server.include_router(router)
 
     def create_async_session(self) -> AsyncSession:
         return self._db_primary.create_async_session()
+
+    async def close_async_primary_database(self) -> None:
+        await self._db_primary.async_engine_close()
+
 
     def run_server(self) -> None:
         uvicorn.run(
