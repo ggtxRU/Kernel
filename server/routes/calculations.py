@@ -57,8 +57,10 @@ async def get_last_calculations(
             default=[],
             alias='fields',
             description="""
-            Possible values: name, time-spent
-            """
+            Valid values: name, time-spent
+            """,
+            example='name'
+
         )
 
 ):

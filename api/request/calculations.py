@@ -11,4 +11,4 @@ class RequestCalculationCreate(RequestBase):
 
     date_start: datetime.date = Field(...)
     date_fin: datetime.date = Field(...)
-    lag: int = Field(...)
+    lag: int = Field(..., gt=0)
