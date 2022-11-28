@@ -12,7 +12,7 @@ server:
     workers: 1
 
 db_primary:
-    host: 'db'
+    host: 'postgres'
     port: 5432
     user: 'postgres'
     password: 'root'
