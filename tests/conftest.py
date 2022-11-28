@@ -71,3 +71,13 @@ def session(database):
     session = database.create_session()
     yield session
     session.close()
+
+@pytest.fixture()
+def truncate_tables(database):
+    with database.engine.connect() as con:
+        con.execute("""
+            TRUNCATE TABLE
+                calculation,
+                calculation_result
+            CASCADE
+        """)

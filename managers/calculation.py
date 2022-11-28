@@ -12,7 +12,7 @@ from calculation.kernel import CalculationKernel
 from db.custom.calculation_params import CalculationParams
 from db.enum.calculations import CalculationStatusEnum
 from db.enum.direction import DirectionEnum
-from db.models.calculations.complete_calculation import DBCalculationProcessCompleteFactory, \
+from db.models.calculations.calculation_result import DBCalculationProcessCompleteFactory, \
     DBCalculationResult
 from db.models.calculations.calculation import DBCalculation, DBCalculationProcessInputDataFactory
 from db.repositories.calculation import CalculationRepository

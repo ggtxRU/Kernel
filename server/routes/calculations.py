@@ -50,7 +50,7 @@ async def get_last_calculations(
     Get a specific calculation by ID
     """
 )
-async def get_last_calculations(
+async def get_calculation_by_id(
         calculation_id: int,
         session: AsyncSession = Depends(get_session),
         q: Optional[list[str]] = Query(
@@ -62,7 +62,6 @@ async def get_last_calculations(
             example='name'
 
         )
-
 ):
     calculation: Optional[DBCalculation] = await CalculationManager.get_by_id(session=session, id=calculation_id)
     return ResponseCalculationFactoryWithCompleteResult.get_from_calculation_data(
