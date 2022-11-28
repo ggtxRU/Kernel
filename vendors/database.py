@@ -4,7 +4,7 @@ from typing import Optional
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine, AsyncSession
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 
 from vendors.config import DatabaseConfig
 
@@ -49,6 +49,9 @@ class Database:
 
     async def async_engine_close(self) -> None:
         await self.async_engine.dispose()
+
+    def create_session(self) -> Session:
+        return self._session_factory()
 
 
 class DatabaseFactory:

@@ -65,3 +65,9 @@ def app(config, database) -> Application:
 def client(app) -> Generator:
     with TestClient(app.fast_api_server) as client:
         yield client
+
+@pytest.fixture
+def session(database):
+    session = database.create_session()
+    yield session
+    session.close()
