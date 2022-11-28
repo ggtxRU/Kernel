@@ -25,7 +25,7 @@ db_config = Config(file=config_path).db_primary
 
 
 def get_url():
-    return str(URL(
+    return str(URL.create(
         drivername='postgresql',
         host=db_config.host,
         port=db_config.port,
