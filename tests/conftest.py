@@ -31,7 +31,7 @@ def database(config) -> Database:
         GRANT ALL ON SCHEMA public TO public;
     """)
     db_config = config.db_primary
-    dsn = str(URL(
+    dsn = str(URL.create(
         drivername='postgresql',
         host=db_config.host,
         port=db_config.port,

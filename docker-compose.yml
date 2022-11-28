@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  server:
+    container_name: server
+    build: ./
+    command: bash -c "alembic upgrade head && python run.py"
+    ports:
+      - 3002:3002
+    networks:
+      - network
+    depends_on:
+      db:
+        condition: service_healthy
+
+  worker:
+    container_name: worker
+    build: ./
+    command: bash -c "python run.py worker"
+    networks:
+      - network
+    depends_on:
+      server:
+        condition: service_started
+
+  db:
+    container_name: db
+    build:
+      context: ./db
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=kernel_dev
+    networks:
+      - network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+
+networks:
+  network:
