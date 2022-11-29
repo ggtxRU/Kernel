@@ -36,10 +36,10 @@ CREATE DATABASE kernel_test;
 pip install -r requirements.txt
 ```
 
-#### Alembic
+#### Run migrations
 
 ```bash
-alembic upgrade head && alembic revision --autogenerate -m "Added all" && alembic upgrade head
+alembic upgrade head
 ```
 
 
