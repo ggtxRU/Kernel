@@ -67,7 +67,7 @@ alembic upgrade head
 python run.py
 ```
 
-#### Запуск воркера
+#### Запуск воркера (в другом окне терминала)
 
 ```bash
 python run.py worker
