@@ -9,6 +9,9 @@ from sqlalchemy.engine import URL
 from db.models.base import Base
 from vendors.config import Config
 
+from db.models.calculations.calculation import DBCalculation
+from db.models.calculations.calculation_result import DBCalculationResult
+
 config = context.config
 
 fileConfig(config.config_file_name)
