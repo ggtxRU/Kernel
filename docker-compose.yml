@@ -5,34 +5,24 @@ services:
   server:
     container_name: server
     build: ./
-    command: bash -c "alembic upgrade head && alembic revision --autogenerate -m "Added all" && alembic upgrade head && python run.py"
+    command: bash -c "alembic upgrade head && pytest && python run.py"
     ports:
       - 3002:3002
     networks:
       - network
     depends_on:
-      server_test:
-        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
 
   worker:
     container_name: worker
     build: ./
-    command: bash -c "python run.py worker"
+    command: bash -c "sleep 7.5 && python run.py worker"
     networks:
       - network
     depends_on:
-      server_test:
-        condition: service_completed_successfully
-
-  server_test:
-    container_name: server_test
-    build: ./
-    command: bash -c "pytest"
-    networks:
-      - network
-    depends_on:
-      postgres:
-        condition: service_healthy
+      server:
+        condition: service_started
 
   postgres:
     container_name: db
