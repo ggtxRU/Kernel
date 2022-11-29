@@ -7,14 +7,16 @@ from pandas import DataFrame
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.request.calculations import RequestCalculationCreate
+from calculation.kernel import CalculationKernel
 from db.custom.calculation_params import CalculationParams
 from db.enum.calculations import CalculationStatusEnum
 from db.enum.direction import DirectionEnum
 from db.models.calculations.calculation import DBCalculation, DBCalculationProcessInputDataFactory
 from db.models.calculations.calculation_result import DBCalculationProcessCompleteFactory
 from db.repositories.calculation import CalculationRepository
-from entities.kernel import KERNEL
 from server.exceptions.calculation import CalculationNotFoundException
+
+KERNEL = CalculationKernel()
 
 
 class CalculationManager:
@@ -115,7 +117,7 @@ class CalculationManager:
                 """Меняем статус расчета -> /Завершен/."""
                 await cls.__change_calculation_status_to_complete(calculation=calculation, session=session)
         else:
-            time.sleep(5)
+            time.sleep(2.5)
 
     @classmethod
     async def __get_data_for_calculation_from_json(

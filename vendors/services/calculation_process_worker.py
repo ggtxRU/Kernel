@@ -17,4 +17,4 @@ class CalculationProcessWorkerService(BaseService):
 
     @property
     def time_sleep(self) -> float:
-        return 0.2
+        return 0.1
