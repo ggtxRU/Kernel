@@ -1,7 +1,7 @@
-import pandas as pd
-import numpy as np
 import time
 
+import numpy as np
+import pandas as pd
 from pandas import DataFrame
 
 
@@ -17,7 +17,7 @@ class CalculationKernel:
 
         Returns
         -------
-        df_rate - DataFrame с полями ['date', 'liquid', 'oil', 'water', 'wct'] - дата, жидкость, нефть, вода, обводненность
+        df_rate - DataFrame с полями ['date', 'liquid', 'oil', 'water', 'wct'] - дата, жидкость, нефть, вода, обводненность  # noqa: E501
         """
         time.sleep(10)
         need_dates = pd.date_range(start=date_start, end=date_fin, freq=str(lag)+'D')
@@ -30,7 +30,7 @@ class CalculationKernel:
         signal[p2:] -= level//5
         signal2 = np.linspace(level*.9, level*.2, num=len(need_dates)) + signal2
         signal2 = np.min([signal, signal2], axis=0)
-        df_rate = pd.DataFrame({'date':need_dates, 'liquid':signal, 'oil':signal2})
+        df_rate = pd.DataFrame({'date': need_dates, 'liquid': signal, 'oil': signal2})
         df_rate['water'] = df_rate['liquid'] - df_rate['oil']
         df_rate['wct'] = df_rate['water']/df_rate['liquid']
         return df_rate

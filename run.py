@@ -43,7 +43,6 @@ def run_service_for_generating_field_indicators(app: Application):
     # Создание и проверка подключения к основной базе данных
     app.init_async_primary_database()
 
-
     # Запуск воркера
     service = CalculationProcessWorkerService(app)
     asyncio.run(service.run())

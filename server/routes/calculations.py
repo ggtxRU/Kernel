@@ -25,8 +25,8 @@ calculations_router = APIRouter(
     '/last',
     response_model=list[ResponseCalculationSimple],
     description="""
-    Getting a list of recent calculation runs.
-    Specify the number of calculations required by the \limit\ parameter.
+    Получение списка последних 10 запусков расчетов.
+    Изменить количество возвращаемых расчетов параметром /limit/.
     Default: 10
     """
 )
@@ -47,7 +47,7 @@ async def get_last_calculations(
     '/{calculation_id}',
     response_model=Optional[ResponseCalculationWithCompleteResult],
     description="""
-    Get a specific calculation by ID
+    Получение одного конкретного расчета по id.
     """
 )
 async def get_calculation_by_id(
@@ -72,7 +72,7 @@ async def get_calculation_by_id(
     '/create',
     response_model=ResponseCalculationCreate,
     description="""
-    Create new calculation.
+    Создание нового расчета.
     """
 )
 async def create_calculation(

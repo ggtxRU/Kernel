@@ -1,11 +1,6 @@
-import datetime
-from typing import Optional
-
+import sqlalchemy.types as types
 from sqlalchemy import Column, text, MetaData
 from sqlalchemy.orm import declarative_base
-
-import sqlalchemy.types as types
-
 
 meta = MetaData(naming_convention={
     "ix": "ix_%(column_0_label)s",

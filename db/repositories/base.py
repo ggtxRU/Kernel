@@ -1,11 +1,8 @@
 from typing import Any
 
-from sqlalchemy import select, exists
-from sqlalchemy.cimmutabledict import immutabledict
 from sqlalchemy.engine import ChunkedIteratorResult
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.sql import Select, Delete
+from sqlalchemy.sql import Select
 
 from db.models.base import BaseModel
 

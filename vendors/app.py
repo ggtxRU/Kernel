@@ -58,7 +58,6 @@ class Application:
     async def close_async_primary_database(self) -> None:
         await self._db_primary.async_engine_close()
 
-
     def run_server(self) -> None:
         uvicorn.run(
             self._fast_api_server,  # type: ignore

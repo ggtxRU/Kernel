@@ -8,7 +8,7 @@ class CalculationProcessWorkerService(BaseService):
 
     @property
     def service_name(self) -> str:
-        return 'CalculationProcessWorker'
+        return 'Calculation Worker'
 
     @property
     def purpose_func(self) -> Callable:

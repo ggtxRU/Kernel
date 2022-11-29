@@ -1,4 +1,3 @@
-import asyncio
 import json
 import time
 from datetime import datetime
@@ -8,13 +7,11 @@ from pandas import DataFrame
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.request.calculations import RequestCalculationCreate
-from calculation.kernel import CalculationKernel
 from db.custom.calculation_params import CalculationParams
 from db.enum.calculations import CalculationStatusEnum
 from db.enum.direction import DirectionEnum
-from db.models.calculations.calculation_result import DBCalculationProcessCompleteFactory, \
-    DBCalculationResult
 from db.models.calculations.calculation import DBCalculation, DBCalculationProcessInputDataFactory
+from db.models.calculations.calculation_result import DBCalculationProcessCompleteFactory
 from db.repositories.calculation import CalculationRepository
 from entities.kernel import KERNEL
 from server.exceptions.calculation import CalculationNotFoundException
@@ -28,20 +25,25 @@ class CalculationManager:
             request_model: RequestCalculationCreate
     ) -> DBCalculation:
         """
-        Adds input data for calculation to an improvised queue.
+        Добавляем в импровизированную FIFO очередь новый набор входных данных для выполнения расчета.
         """
 
-        data: DBCalculation = DBCalculationProcessInputDataFactory.get_from_request_calculation_create(
+        new_calculation: DBCalculation = DBCalculationProcessInputDataFactory.get_from_request_calculation_create(
             request_calculation_create=request_model
         )
-        await CalculationRepository(session).add_model(data)
-        return data
+        await CalculationRepository(session).add_model(new_calculation)
+        return new_calculation
 
     @staticmethod
     async def get_last_calculation_launches(
             session: AsyncSession,
             limit: int, offset: int, direction: DirectionEnum
     ) -> list[DBCalculation]:
+        """
+        Получение списка последних N запусков расчетов.
+
+        :param limit: регулировка параметра N.
+        """
         return await CalculationRepository(session).get_last_calculation_launches(
             limit=limit, offset=offset, direction=direction)
 
@@ -50,9 +52,18 @@ class CalculationManager:
             session: AsyncSession,
             id: int
     ) -> Optional[DBCalculation]:
+        """
+        Получение одного конкретного расчета по id.
+
+        :param id: id расчета.
+        """
         calculation: Optional[DBCalculation] = await CalculationRepository(
             session).get_by_id_with_complete_result(id_=id)
+
         if not calculation:
+            """
+            В случае, если расчета с указанным id не существует.
+            """
             raise CalculationNotFoundException.raise_with_value(id)
         return calculation
 
@@ -61,38 +72,48 @@ class CalculationManager:
             cls,
             session: AsyncSession,
     ) -> None:
-        """Get 3 input parameters for calculation process from the top of the improvised queue."""
+        """
+        Получаем 3 набора входных данных для выполнения расчета генерации промысловых показателей
+         нефтянной скважины для каждого набора.
+        """
         calculations_in_queue: list[DBCalculation] = await CalculationRepository(
             session).get_from_top_of_the_queue()
 
         """
-        It makes no sense to continue the continuous work of the worker 
-            if the queue with the parameters waiting for the queue is empty
+        Если очередь с параметрами, ожидающими выполнения, не пуста - заходим в цикл.
+        Иначе - нет смысла продолжать непрерывную работу воркера.
         """
         if len(calculations_in_queue) >= 1:
 
             for calculation in calculations_in_queue:
+                """Подготовка данных для отправки в CalculationKernel."""
                 calculation_params_: CalculationParams = await cls.__get_data_for_calculation_from_json(
                     json_params=calculation.input_data)
 
-                """
-                :param start_time_calculation_process: Time-tracking for calculation process
-                """
                 start_time_calculation_process = time.monotonic()
 
-                await cls.__change_status_to_in_progress(calculation=calculation, session=session)
+                """Меняем статус расчета -> /В процессе выполнения/."""
+                await cls.__change_calculation_status_to_in_progress(calculation=calculation, session=session)
+
+                """Запуска процесса выполнения расчета."""
                 result_data_frame: DataFrame = await cls.__do_calculation_and_return_result_data_frame(
                     calculation_params=calculation_params_)
 
+                """
+                :param time_spent_on_calculation: Время затраченное на выполнение расчета.
+                """
                 time_spent_on_calculation = time.monotonic() - start_time_calculation_process
 
+                """Сохраняем полученный результат в БД."""
                 await cls.__add_calculation_result_in_db(
                     session=session,
                     data_frame=result_data_frame,
                     time_spent_on_calculation=time_spent_on_calculation,
                     calculation_id=calculation.id
                 )
-                await cls.__change_status_to_complete(calculation=calculation, session=session)
+
+                """Меняем статус расчета -> /Завершен/."""
+                await cls.__change_calculation_status_to_complete(calculation=calculation, session=session)
         else:
             time.sleep(5)
 
@@ -101,8 +122,7 @@ class CalculationManager:
             cls, json_params: json
     ) -> CalculationParams:
         """
-        :param json_params: 'date_start': 'YYYY-MM-DD', 'date_fin': 'YYYY-MM-DD', 'lag': int
-        :return:
+        :param json_params: {'date_start': 'YYYY-MM-DD', 'date_fin': 'YYYY-MM-DD', 'lag': int}
         """
         return CalculationParams(
             date_start=datetime.fromisoformat(json_params['date_start']),
@@ -111,17 +131,16 @@ class CalculationManager:
         )
 
     @staticmethod
-    async def __change_status_to_in_progress(
+    async def __change_calculation_status_to_in_progress(
             calculation: DBCalculation, session: AsyncSession
     ) -> None:
         calculation.status = CalculationStatusEnum.in_progress
         calculation.calculation_start_date = datetime.now()
-
         await session.flush()
         await session.commit()
 
     @staticmethod
-    async def __change_status_to_complete(
+    async def __change_calculation_status_to_complete(
             calculation: DBCalculation, session: AsyncSession
     ) -> None:
         calculation.status = CalculationStatusEnum.complete

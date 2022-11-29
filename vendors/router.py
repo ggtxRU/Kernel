@@ -5,6 +5,7 @@ from fastapi.exceptions import RequestValidationError, HTTPException
 from fastapi.routing import APIRoute
 from starlette.requests import Request
 from starlette.responses import Response, JSONResponse
+
 from api.response.exceptions.base import ResponseBadRequestException, ResponseForbiddenException, \
     ResponseInternalServerException, ResponseNotFoundException, ResponseUnprocessableException, ResponseTimeoutException
 from server.exceptions.base import BaseServerException, ServerInternalException
@@ -67,7 +68,7 @@ class CustomRoute(APIRoute):
             except HTTPException:
                 await session.rollback()
                 raise
-            except BaseException as exc:
+            except BaseException:
                 await session.rollback()
 
                 print(traceback.format_exc())

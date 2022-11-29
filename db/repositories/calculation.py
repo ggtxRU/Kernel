@@ -20,7 +20,8 @@ class CalculationRepository(BaseRepository):
         ).limit(limit)
         return await self.all_ones(query)
 
-    async def get_last_calculation_launches(self, limit: int, offset: int, direction: DirectionEnum) -> list[DBCalculation]:
+    async def get_last_calculation_launches(
+            self, limit: int, offset: int, direction: DirectionEnum) -> list[DBCalculation]:
         query = select(
             DBCalculation
         ).limit(limit).offset(offset)

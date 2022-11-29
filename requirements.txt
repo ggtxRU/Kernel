@@ -23,6 +23,5 @@ pytest-asyncio==0.18.3
 Faker==11.3.0
 requests==2.27.1
 
-# Linters
+# Other
 flake8==4.0.1
-mypy==0.961

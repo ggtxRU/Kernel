@@ -4,7 +4,7 @@ from starlette.testclient import TestClient
 fake = Faker()
 
 
-def test_create_calculation(client: TestClient, session, truncate_tables):
+def test_get_calculation_by_id(client: TestClient, session, truncate_tables):
     response = client.post(
         '/calculations/create',
         json={

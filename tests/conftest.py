@@ -3,9 +3,9 @@ from typing import Generator
 
 import pytest
 from alembic import command
+from alembic.config import Config as AlembicConfig
 from sqlalchemy.engine import URL
 from starlette.testclient import TestClient
-from alembic.config import Config as AlembicConfig
 
 from server.routers import routers
 from vendors.app import Application

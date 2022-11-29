@@ -36,7 +36,10 @@ class ResponseCalculationFactorySimple:
 
     @classmethod
     def get_many_from_calculation_data(cls, calculation_data: list[DBCalculation]) -> list[ResponseCalculationSimple]:
-        return [cls.get_from_calculation_data(calculation_data=calculation_data_) for calculation_data_ in calculation_data]
+        return [
+            cls.get_from_calculation_data(calculation_data=calculation_data_)
+            for calculation_data_ in calculation_data
+        ]
 
 
 class ResponseCalculationFactoryWithCompleteResult:

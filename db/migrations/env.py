@@ -1,18 +1,13 @@
 import os
 from logging.config import fileConfig
 
+from alembic import context
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-
-from alembic import context
-
 from sqlalchemy.engine import URL
 
 from db.models.base import Base
 from vendors.config import Config
-
-from db.models.calculations.calculation import DBCalculation
-from db.models.calculations.calculation_result import DBCalculationResult
 
 config = context.config
 
