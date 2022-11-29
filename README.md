@@ -18,13 +18,13 @@ git clone https://github.com/ggtxRU/Kernel.git && cd Kernel && docker-compose up
 git clone https://github.com/ggtxRU/Kernel.git && cd Kernel
 ```
 
-#### DB для работы сервиса
+#### Создать DB для работы сервиса
 
 ```bash
 CREATE DATABASE kernel_dev;
 ```
 
-#### DB для тестов
+#### Создать DB для тестов
 
 ```bash
 CREATE DATABASE kernel_test;
@@ -36,14 +36,12 @@ CREATE DATABASE kernel_test;
 pip install -r requirements.txt
 ```
 
-#### Run migrations
+#### Применение миграций
 
 ```bash
 alembic upgrade head
 ```
 
-
-<br>
 
 #### Запуск сервера
 
@@ -57,8 +55,16 @@ python run.py
 python run.py worker
 ```
 
+<br>
+
 #### Запуск тестов
 
 ```bash
 pytest
+```
+
+#### Увидеть процент покрытия
+
+```bash
+open htmlcov/index.html
 ```
