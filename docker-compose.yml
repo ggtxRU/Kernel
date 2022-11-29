@@ -5,7 +5,7 @@ services:
   server:
     container_name: server
     build: ./
-    command: bash -c "alembic upgrade head && python run.py"
+    command: bash -c "alembic upgrade head && alembic revision --autogenerate -m "Added all" && alembic upgrade head && python run.py"
     ports:
       - 3002:3002
     networks:
