@@ -58,9 +58,7 @@ async def get_calculation_by_id(
             alias='fields',
             description="""
             Valid values: name, time-spent
-            """,
-            example='name'
-
+            """
         )
 ):
     calculation: Optional[DBCalculation] = await CalculationManager.get_by_id(session=session, id=calculation_id)
