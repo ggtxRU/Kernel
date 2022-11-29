@@ -33,7 +33,7 @@ CREATE DATABASE kernel_test;
 #### Установка зависимостей
 
 ```bash
-pip install -r requirements.txt --upgrade pip
+pip install -r requirements.txt
 ```
 
 #### Alembic
