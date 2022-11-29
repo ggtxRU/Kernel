@@ -6,7 +6,21 @@
 
 <br>
 
-## Запуск через Docker
+## Принцип работы
+
+<pre><h3>FastAPI сервер</h3> -- отвечает на HTTP запросы на порту 3002:<br>
+
+
+<li><strong>GET /calculations/last</strong> - получить последние запуски расчетов.<br></li>
+  <li><strong>GET /calculations/{calculation_id}</strong> - получить конкретный расчет по id.<br></li>
+  <li><strong>POST /calculations/create</strong> - создать новый расчет, и поместить его в очередь на выполнение.</li><br></pre>
+ 
+<pre><h3>Абстрактный воркер</h3> -- раз в N секунд забирает из импровизированной очереди задачи на выполнение <br> и сохраняет результат расчета в БД.</pre>
+
+<br>
+
+
+## Запуск через Docker [рекомендуется]
 
 ```bash
 git clone https://github.com/ggtxRU/Kernel.git && cd Kernel && docker-compose up --build
@@ -53,7 +67,7 @@ alembic upgrade head
 python run.py
 ```
 
-#### Запуск воркера
+#### Запуск воркера (в другом окне терминала)
 
 ```bash
 python run.py worker
