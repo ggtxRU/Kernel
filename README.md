@@ -20,7 +20,7 @@
 <br>
 
 
-## Запуск через Docker
+## Запуск через Docker [рекомендуется]
 
 ```bash
 git clone https://github.com/ggtxRU/Kernel.git && cd Kernel && docker-compose up --build
