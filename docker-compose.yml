@@ -17,7 +17,7 @@ services:
   worker:
     container_name: worker
     build: ./
-    command: bash -c "sleep 7.5 && python run.py worker"
+    command: bash -c "sleep 10 && python run.py worker"
     networks:
       - network
     depends_on:
