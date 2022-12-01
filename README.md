@@ -72,12 +72,6 @@ python run.py
 ```bash
 python run.py worker
 ```
-<br> 
-
-#### [UPDATED]
-<pre><strong>Note</strong>: при необходимости, перенаправить порт <strong>postgres</strong> в файле <strong>/etc/hosts</strong></pre>
-![Item page](assets/etc_hosts.png)
-
 
 <br>
 
@@ -92,3 +86,11 @@ pytest
 ```bash
 open htmlcov/index.html
 ```
+
+
+<br> 
+<br> 
+
+#### [UPDATED]
+<pre><strong>Note</strong>: при необходимости, перенаправить порт <strong>postgres</strong> в файле <strong>/etc/hosts</strong></pre>
+![Item page](assets/etc_hosts.png)
